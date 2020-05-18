@@ -23,7 +23,7 @@ def GenerateLinkDescription(link):
          if title == 'Imgur: The magic of the Internet':
              return (GenerateLinkDescription(link))
          else:
-             return title
+             return OrganizeDescription(title)
     except KeyboardInterrupt:
         raise
     except:
@@ -39,7 +39,7 @@ def GenerateLinkDescription(link):
         if title == 'Imgur: The magic of the Internet':
             return (GenerateLinkDescription(link))
         else:
-            return title
+            return OrganizeDescription(title)
     except KeyboardInterrupt:
         raise
     except:
@@ -49,10 +49,30 @@ def GenerateLinkDescription(link):
     return False
 
 
+def OrganizeDescription(title):
+    retString = "This link leads to:\n\n"
+    if (title.count(' | ') > 0):
+        splitTitle = title.rsplit(' | ')
+        retString += splitTitle[0] + "\n\n"
+        retString += "on **"
+        retString += splitTitle[1] + "** \n"
+    elif (title.count(' - ') > 0):
+        splitTitle = title.rsplit(' - ')
+        retString += splitTitle[0] + "\n\n"
+        retString += "on **"
+        retString += splitTitle[1] + "** \n\n"
+    else:
+        retString += title + "\n\n"
+
+    retString += "^(I am a bot. This action was preformed automatically.)"
+
+    return retString
+
+
 '''
 Run from commandline using command
 python ContentFinder.py <link>
 '''
 if __name__ == "__main__":
     link = str(sys.argv[1])
-    print("\n\n Title:\n {}\n\n".format(GenerateLinkDescription(link)))
+    print(GenerateLinkDescription(link))
