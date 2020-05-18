@@ -7,10 +7,9 @@ import ContentFinder
 def main():
 
     accountFile = open("./exclude/account.txt", "r")
-    privateInfo = ["", "", "", ""]
+    privateInfo = []
     for i in range(0,4):
-        line = accountFile.readline().rstrip()
-        privateInfo[i] = line
+        privateInfo.append(accountFile.readline().rstrip())
 
     accountFile.close()
 
