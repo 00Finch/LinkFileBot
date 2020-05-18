@@ -7,15 +7,18 @@ import ContentFinder
 def main():
 
     accountFile = open("./exclude/account.txt", "r")
-    privateUsername = accountFile.readline().rstrip()
-    privatePassword = accountFile.readline().rstrip()
+    privateInfo = ["", "", "", ""]
+    for i in range(0,4):
+        line = accountFile.readline().rstrip()
+        privateInfo[i] = line
+
     accountFile.close()
 
-    reddit = praw.Reddit(client_id = 'mquSmzl3A6nnSg',
-     client_secret = 'ayz-KjEA2SkzCENTS5RvTaRpf24',
-      username = privateUsername,
-       password = privatePassword,
-        user_agent = 'Link identification script (by /u/LinkFileBot)')
+    reddit = praw.Reddit(client_id = privateInfo[0],
+                         client_secret = privateInfo[1],
+                         username = privateInfo[2],
+                         password = privateInfo[3],
+                         user_agent = 'Link identification script (by /u/LinkFileBot)')
 
     # skip_existing=True skips any comments that were posted before the stream
     # was created
