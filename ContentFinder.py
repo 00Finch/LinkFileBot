@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 import sys
 import re
-
+from nsfw import DetectSentance
 
 '''
 Call using GenerateLinkDescription(<link>)
@@ -17,17 +17,17 @@ def GenerateLinkDescription(link):
     soup = bs(requestsInstance.content, 'lxml')
 
     #Get link using beautifulsoup library
-    try:
-         title = (soup.select_one('title').text).strip()
-         #ignore imgur default title and search again
-         if title == 'Imgur: The magic of the Internet':
-             return (GenerateLinkDescription(link))
-         else:
-             return OrganizeDescription(title)
-    except KeyboardInterrupt:
-        raise
-    except:
-        pass
+    # try:
+    title = (soup.select_one('title').text).strip()
+    #ignore imgur default title and search again
+    if title == 'Imgur: The magic of the Internet':
+        return (GenerateLinkDescription(link))
+    else:
+        return OrganizeDescription(title)
+    # except KeyboardInterrupt:
+    #     raise
+    # except:
+    #     pass
 
     # If beautifulsoup fails, attempt using regex
     try:
@@ -51,15 +51,20 @@ def GenerateLinkDescription(link):
 
 def OrganizeDescription(title):
     retString = "This link leads to:\n\n"
+    nsfw = DetectSentance(title)
     if (title.count(' | ') > 0):
         splitTitle = title.rsplit(' | ')
-        retString += splitTitle[0] + "\n\n"
-        retString += "on **"
+        if nsfw: retString += ">!"
+        retString += splitTitle[0]
+        if nsfw: retString += "!< \n\n"
+        retString += "-- **"
         retString += splitTitle[1] + "** \n"
     elif (title.count(' - ') > 0):
         splitTitle = title.rsplit(' - ')
-        retString += splitTitle[0] + "\n\n"
-        retString += "on **"
+        if nsfw: retString += ">!"
+        retString += splitTitle[0]
+        if nsfw: retString += "!< \n\n"
+        retString += "-- **"
         retString += splitTitle[1] + "** \n\n"
     else:
         retString += title + "\n\n"
