@@ -46,7 +46,7 @@ def GenerateLinkDescription(link):
         pass
 
     #return false if no title found
-    return False
+    return "Failed to fetch title"
 
 
 def OrganizeDescription(title):
