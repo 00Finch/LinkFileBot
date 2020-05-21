@@ -15,8 +15,8 @@ def DetectNSFW(word):
         if w.strip() == newWord: return True
     return False
 
-def DetectSentance(sentance):
-    for word in sentance.split(' '):
+def DetectSentence(sentance):
+    for word in sentence.split(' '):
         if DetectNSFW(word):
             return True
     else:
