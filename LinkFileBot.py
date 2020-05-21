@@ -21,7 +21,6 @@ def main():
 
     # skip_existing=True skips any comments that were posted before the stream
     # was created
-
     for comment in reddit.subreddit('Test').stream.comments(skip_existing=True):
 
         # if the comment isn't from the bot
