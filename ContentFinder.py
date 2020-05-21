@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 import sys
 import re
-from nsfw import DetectSentance
+from nsfw import DetectSentence
 
 '''
 Call using GenerateLinkDescription(<link>)
@@ -17,17 +17,17 @@ def GenerateLinkDescription(link):
     soup = bs(requestsInstance.content, 'lxml')
 
     #Get link using beautifulsoup library
-    # try:
-    title = (soup.select_one('title').text).strip()
-    #ignore imgur default title and search again
-    if title == 'Imgur: The magic of the Internet':
-        return (GenerateLinkDescription(link))
-    else:
-        return OrganizeDescription(title)
-    # except KeyboardInterrupt:
-    #     raise
-    # except:
-    #     pass
+    try:
+        title = (soup.select_one('title').text).strip()
+        #ignore imgur default title and search again
+        if title == 'Imgur: The magic of the Internet':
+            return (GenerateLinkDescription(link))
+        else:
+            return OrganizeDescription(title)
+    except KeyboardInterrupt:
+        raise
+    except:
+        pass
 
     # If beautifulsoup fails, attempt using regex
     try:
@@ -51,7 +51,10 @@ def GenerateLinkDescription(link):
 
 def OrganizeDescription(title):
     retString = "This link leads to:\n\n"
-    nsfw = DetectSentance(title)
+    nsfw = DetectSentence(title)
+    if nsfw: ret += "## NSFW Warning\
+    \n--------------- it was detected that there is a high probability that \
+    the linked content contains material which may not be appropriate"
     if (title.count(' | ') > 0):
         splitTitle = title.rsplit(' | ')
         if nsfw: retString += ">!"
