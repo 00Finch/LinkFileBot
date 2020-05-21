@@ -52,7 +52,7 @@ def GenerateLinkDescription(link):
 def OrganizeDescription(title):
     retString = "This link leads to:\n\n"
     nsfw = DetectSentence(title)
-    if nsfw: ret += "## NSFW Warning\
+    if nsfw: retString += "## NSFW Warning\
     \n--------------- it was detected that there is a high probability that \
     the linked content contains material which may not be appropriate"
     if (title.count(' | ') > 0):
