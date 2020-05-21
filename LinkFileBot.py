@@ -30,6 +30,7 @@ def main():
             print(link)
 
             text = ContentFinder.GenerateLinkDescription(link)
+            print(text)
             comment.reply(text)
 
         except:
