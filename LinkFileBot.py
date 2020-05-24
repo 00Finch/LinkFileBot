@@ -21,32 +21,41 @@ def main():
 
     # skip_existing=True skips any comments that were posted before the stream
     # was created
-    for comment in reddit.subreddit('Test').stream.comments(skip_existing=True):
+    while True:
+        for comment in reddit.subreddit('All').stream.comments(skip_existing=True):
 
-        # if the comment isn't from the bot
-        if(comment.author.name.strip() != privateInfo[2]):
-            try:
-                # grabs link from comment body
-                linkIndex = comment.body_html.find("href")
-                linkEndIndex = comment.body_html.find("\">http", linkIndex)
-                link = comment.body_html[linkIndex + 6:linkEndIndex]
+            # if the comment isn't from the bot
+            if(comment.author.name.strip() != privateInfo[2]):
+                try:
+                    # grabs link from comment body
+                    linkIndex = comment.body_html.find("href")
+                    linkEndIndex = comment.body_html.find("\">http", linkIndex)
+                    link = comment.body_html[linkIndex + 6:linkEndIndex]
 
-                # linkIndex will be -1 if no link is present in the comment
-                if(linkIndex < 0):
+                    # linkIndex will be -1 if no link is present in the comment
+                    if(linkIndex < 0):
+                        continue
+
+                    # prints the link to the terminal
+                    print(link, flush=True)
+
+                    text = ContentFinder.GenerateLinkDescription(link)
+
+                except:
                     continue
 
-                # prints the link to the terminal
-                print(link)
-
-                text = ContentFinder.GenerateLinkDescription(link)
-
-            except:
+                try:
+                    comment.reply(text)
+                    time.sleep(360)
+                except Exception as e:
+                    print(e, flush=True)
+                    time.sleep(360) #sleep six minutes
+                    break
+            else:
                 continue
 
-            comment.reply(text)
 
-        else:
-            continue
+
 
 
 if __name__ == "__main__":

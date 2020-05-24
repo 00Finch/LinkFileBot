@@ -17,17 +17,17 @@ def GenerateLinkDescription(link):
     soup = bs(requestsInstance.content, 'lxml')
 
     #Get link using beautifulsoup library
-    try:
-        title = (soup.select_one('title').text).strip()
-        #ignore imgur default title and search again
-        if title == 'Imgur: The magic of the Internet':
-            return (GenerateLinkDescription(link))
-        else:
-            return OrganizeDescription(title)
-    except KeyboardInterrupt:
-        raise
-    except:
-        pass
+    # try:
+    title = (soup.select_one('title').text).strip()
+    #ignore imgur default title and search again
+    if title == 'Imgur: The magic of the Internet':
+        return (GenerateLinkDescription(link))
+    else:
+        return OrganizeDescription(title)
+    # except KeyboardInterrupt:
+    #     raise
+    # except:
+    #     pass
 
     # If beautifulsoup fails, attempt using regex
     try:
@@ -50,29 +50,30 @@ def GenerateLinkDescription(link):
 
 
 def OrganizeDescription(title):
-    retString = "This link leads to:\n\n"
     nsfw = DetectSentence(title)
-    if nsfw: retString += "## NSFW Warning\
-    \n--------------- it was detected that there is a high probability that \
-    the linked content contains material which may not be appropriate"
+    if nsfw: retString = "## NSFW Warning\
+    \n---------------\nit was detected that there is a high probability that \
+the linked content contains material which may not be appropriate:\n\n"
+    else: retString = "This link leads to:\n\n"
+    if nsfw: retString += ">!"
+    retString += title
+    if nsfw: retString += "!< \n"
     if (title.count(' | ') > 0):
         splitTitle = title.rsplit(' | ')
+        retString += "\n\n"
         if nsfw: retString += ">!"
-        retString += splitTitle[0]
-        if nsfw: retString += "!< \n\n"
         retString += "-- **"
-        retString += splitTitle[1] + "** \n"
+        retString += splitTitle[1] + "**"
+        if nsfw: retString += "!<"
     elif (title.count(' - ') > 0):
-        splitTitle = title.rsplit(' - ')
+        splitTitle = title.rsplit(' | ')
+        retString +="\n\n"
         if nsfw: retString += ">!"
-        retString += splitTitle[0]
-        if nsfw: retString += "!< \n\n"
         retString += "-- **"
-        retString += splitTitle[1] + "** \n\n"
-    else:
-        retString += title + "\n\n"
+        retString += splitTitle[1] + "**"
+        if nsfw: retString += "!< "
 
-    retString += "^(I am a bot. This action was preformed automatically.)"
+    retString += "\n\n ^(I am a bot. This action was preformed automatically.)"
 
     return retString
 
