@@ -30,6 +30,7 @@ def main():
                 try:
                     # grabs link from comment body
                     link = LinkExtractor.ExtractLink(comment)
+                    if not link: continue
 
                     # prints the link to the terminal
                     print(f"||\n{link}\n||", flush=True)
