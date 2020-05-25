@@ -10,6 +10,10 @@ Returns a string containing link description
 If no description applicable returns False
 '''
 def GenerateLinkDescription(link):
+    if (link[:2] in ["r/", "u/"] or link[:3] in ["/r/", "/u/"]):
+        print(link[:2])
+        return (f"Link leads to {link} on reddit.com")
+
     #establish webpage instance
     requestsInstance = requests.get(link)
 
@@ -50,29 +54,30 @@ def GenerateLinkDescription(link):
 
 
 def OrganizeDescription(title):
-    retString = "This link leads to:\n\n"
     nsfw = DetectSentence(title)
-    if nsfw: retString += "## NSFW Warning\
-    \n--------------- it was detected that there is a high probability that \
-    the linked content contains material which may not be appropriate"
+    if nsfw: retString = "## NSFW Warning\
+    \n---------------\nit was detected that there is a high probability that \
+the linked content contains material which may not be appropriate:\n\n"
+    else: retString = "This link leads to:\n\n"
+    if nsfw: retString += ">!"
+    retString += title
+    if nsfw: retString += "!< \n"
     if (title.count(' | ') > 0):
         splitTitle = title.rsplit(' | ')
+        retString += "\n\n"
         if nsfw: retString += ">!"
-        retString += splitTitle[0]
-        if nsfw: retString += "!< \n\n"
         retString += "-- **"
-        retString += splitTitle[1] + "** \n"
+        retString += splitTitle[1] + "**"
+        if nsfw: retString += "!<"
     elif (title.count(' - ') > 0):
-        splitTitle = title.rsplit(' - ')
+        splitTitle = title.rsplit(' | ')
+        retString +="\n\n"
         if nsfw: retString += ">!"
-        retString += splitTitle[0]
-        if nsfw: retString += "!< \n\n"
         retString += "-- **"
-        retString += splitTitle[1] + "** \n\n"
-    else:
-        retString += title + "\n\n"
+        retString += splitTitle[1] + "**"
+        if nsfw: retString += "!< "
 
-    retString += "^(I am a bot. This action was preformed automatically.)"
+    retString += "\n\n ^(I am a bot. This action was preformed automatically.)"
 
     return retString
 
