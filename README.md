@@ -1,11 +1,31 @@
-# LinkFileBot
+# LinkPreviewBot
 
-LinkFileBot is a collection of scripts for a Reddit bot, made using Praw, that provides information on a link (e.g. title, website) that is found in a comment.
+LinkFileBot is a Reddit bot, made using Praw which detects comments with embedded links and replies with a short blurb of information (e.g. title, website) on the linked site.
 
 ## Usage
-
+### Main Usage
+Use command
 ```bash
 python3 LinkFileBot.py
 ```
+to launch the script via a bash shell
 
-Will start the script. The target subreddit can be changed by editing the string in reddit.subreddit(string) on line 22 of LinkFileBot.py (will be changed in the future)
+OR
+
+Use command 
+```
+python3 LinkFileBot.py > dev/null &
+```
+to run the script silently in the background
+
+### Modules
+*Content finder
+This module accepts a link to a webpage as an argument and returns a description formatted for Reddit Markdown
+  ```
+  python3 ContentFinder.py <url_to_webpage>
+ ```
+ *NSFW
+ This Module accepts a word as an argument and retuns `True` if NSFW content is detected
+   ```
+   python3 nsfw.py <word>
+  ```
