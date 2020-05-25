@@ -30,13 +30,13 @@ def main():
                 try:
                     # grabs link from comment body
                     link = LinkExtractor.ExtractLink(comment)
-                    if not link: break
+
 
                     # prints the link to the terminal
                     print(f"||\n{link}\n||", flush=True)
 
                     text = ContentFinder.GenerateLinkDescription(link)
-
+                    if not text: break
                 except:
                     continue
 
@@ -45,7 +45,7 @@ def main():
                     time.sleep(360)
                 except Exception as e:
                     print(e, flush=True)
-                    time.sleep(360) #sleep six minutes
+                    time.sleep(300) #sleep six minutes
                     break
             else:
                 continue

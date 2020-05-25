@@ -4,6 +4,7 @@ import re
 def ExtractLink(comment):
     soup = bs(comment.body_html, 'lxml')
     link = (soup.select_one('a', attrs={'href': re.compile("^http://")}).text).strip()
+    print(link, flush=True)
     return(link)
 
 def ExtractLinkP(comment):
