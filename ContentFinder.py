@@ -11,8 +11,9 @@ If no description applicable returns False
 '''
 def GenerateLinkDescription(link):
     if (link[:2] in ["r/", "u/"] or link[:3] in ["/r/", "/u/"]):
-        print(link[:2])
-        return (f"Link leads to {link} on reddit.com")
+        return False
+        # print(link[:2])
+        # return (f"Link leads to {link} on reddit.com")
 
     #establish webpage instance
     requestsInstance = requests.get(link)
