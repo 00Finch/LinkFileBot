@@ -1,6 +1,7 @@
 import praw
 import time
 import ContentFinder
+import LinkExtractor
 
 
 
@@ -28,16 +29,10 @@ def main():
             if(comment.author.name.strip() != privateInfo[2]):
                 try:
                     # grabs link from comment body
-                    linkIndex = comment.body_html.find("href")
-                    linkEndIndex = comment.body_html.find("\">http", linkIndex)
-                    link = comment.body_html[linkIndex + 6:linkEndIndex]
-
-                    # linkIndex will be -1 if no link is present in the comment
-                    if(linkIndex < 0):
-                        continue
+                    link = LinkExtractor.ExtractLink(comment)
 
                     # prints the link to the terminal
-                    print(link, flush=True)
+                    print(f"||\n{link}\n||", flush=True)
 
                     text = ContentFinder.GenerateLinkDescription(link)
 

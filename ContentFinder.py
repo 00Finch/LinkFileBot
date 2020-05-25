@@ -10,6 +10,10 @@ Returns a string containing link description
 If no description applicable returns False
 '''
 def GenerateLinkDescription(link):
+    if (link[:2] in ["r/", "u/"] or link[:3] in ["/r/", "/u/"]):
+        print(link[:2])
+        return (f"Link leads to {link} on reddit.com")
+
     #establish webpage instance
     requestsInstance = requests.get(link)
 
@@ -17,17 +21,17 @@ def GenerateLinkDescription(link):
     soup = bs(requestsInstance.content, 'lxml')
 
     #Get link using beautifulsoup library
-    # try:
-    title = (soup.select_one('title').text).strip()
-    #ignore imgur default title and search again
-    if title == 'Imgur: The magic of the Internet':
-        return (GenerateLinkDescription(link))
-    else:
-        return OrganizeDescription(title)
-    # except KeyboardInterrupt:
-    #     raise
-    # except:
-    #     pass
+    try:
+        title = (soup.select_one('title').text).strip()
+        #ignore imgur default title and search again
+        if title == 'Imgur: The magic of the Internet':
+            return (GenerateLinkDescription(link))
+        else:
+            return OrganizeDescription(title)
+    except KeyboardInterrupt:
+        raise
+    except:
+        pass
 
     # If beautifulsoup fails, attempt using regex
     try:
