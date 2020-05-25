@@ -27,6 +27,8 @@ def GenerateLinkDescription(link):
         #ignore imgur default title and search again
         if title == 'Imgur: The magic of the Internet':
             return (GenerateLinkDescription(link))
+        elif title.strip() == 'Google':
+            return False
         else:
             return OrganizeDescription(title)
     except KeyboardInterrupt:
@@ -43,6 +45,8 @@ def GenerateLinkDescription(link):
         #ignore imgur default title and search again
         if title == 'Imgur: The magic of the Internet':
             return (GenerateLinkDescription(link))
+        elif title.strip() == 'Google':
+            return False
         else:
             return OrganizeDescription(title)
     except KeyboardInterrupt:
